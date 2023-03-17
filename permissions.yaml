@@ -1,0 +1,30 @@
+Description:  Create an role for ec2 instances.
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name to namespace resources
+    Type: String
+
+Resources:
+  # define a role that will be applied to an ec2 instance through an instance profile
+  ec2Role:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: ec2Role
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - "arn:aws:iam::aws:policy/AmazonS3ReadOnlyAccess"
+      Tags:
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+Outputs: 
+  ec2Role:
+    Description: "Name of the ec2 role"
+    Value: !Ref ec2Role
