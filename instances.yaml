@@ -11,10 +11,10 @@ Resources:
     Properties:
       InstanceType: t2.micro
       ImageId: ami-006dcf34c09e50022
-      Monitoring: true,
+      Monitoring: true
       Tags:
         - Key: Environment
-          Value: Prod
+          Value: !Ref EnvironmentName
 
 Outputs:
   Ec2IpAddress:
