@@ -1,0 +1,38 @@
+Description:  This template creates the buckets for the apex domain.
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name to namespace resources
+    Type: String
+  FullyQualifiedDomainName:
+    Description: the fully qualified domain name is the apex domain. ie example.com and not www.example.com
+    Type: String
+    
+Resources:
+  SubdomainBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      BucketName: !Sub www.${FullyQualifiedDomainName}
+      WebsiteConfiguration: 
+        RedirectAllRequestsTo:
+          HostName: !Sub ${FullyQualifiedDomainName}.s3.amazonaws.com
+      Tags:
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+  MainBucket:
+    Type: "AWS::S3::Bucket"
+    Properties:
+      AccessControl: PublicRead
+      BucketName: !Ref FullyQualifiedDomainName
+      WebsiteConfiguration:
+        IndexDocument: index.html
+        ErrorDocument: error.html
+      Tags:
+        - Key: Environment
+          Value: !Ref EnvironmentName
+
+Outputs: 
+  ProductionBucketName:
+    Description: "Name of the production bucket"
+    Value: !Ref MainBucket
