@@ -1,0 +1,22 @@
+Description:  create a test ec2 instance.
+
+Parameters:
+  EnvironmentName:
+    Description: An environment name to namespace resources
+    Type: String
+
+Resources:
+  ec2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      ImageId: ami-006dcf34c09e50022
+      Monitoring: true,
+      Tags:
+        - Key: Environment
+          Value: Prod
+
+Outputs:
+  Ec2IpAddress:
+    Description: Public IP address of the EC2 instance
+    Value: !GetAtt ec2Instance.PublicIp
