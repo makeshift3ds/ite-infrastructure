@@ -1,0 +1,17 @@
+Description:  Configures DNS For a domain.
+
+Parameters:
+  FullyQualifiedDomainName:
+    Description: the fully qualified domain name is the apex domain. ie example.com and not www.example.com
+    Type: String
+
+Resources:
+  DNSRecordSet:
+    Type: 'AWS::Route53::RecordSet'
+    Properties:
+      HostedZoneName: !Sub ${FullyQualifiedDomainName}.
+      Name: !Ref FullyQualifiedDomainName
+      Type: A
+      AliasTarget:
+        DNSName: s3-website.us-east-2.amazonaws.com
+        HostedZoneId: Z2O1EMRO9K5GLX
